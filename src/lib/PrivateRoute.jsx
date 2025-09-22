@@ -40,8 +40,9 @@ const PrivateRoute = ({ children, subscribedCourses = [] }) => {
   if (!isProfileComplete) {
     if (!isRegisterPageVisible) {
       return <Navigate to="/register" replace />;
-    }
-    return <Navigate to="/profile" replace />;
+    }    
+    
+    return <Navigate to="/register" replace />;
   }
 
   if (

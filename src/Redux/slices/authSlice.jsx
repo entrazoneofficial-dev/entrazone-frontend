@@ -42,7 +42,7 @@ const authSlice = createSlice({
     },
 
     verifyOtpSuccess: (state, action) => {
-      const { user, access, refresh } = action.payload;
+      const { user, access, refresh } = action.payload;      
       state.user = user;
       state.accessToken = access;
       state.refreshToken = refresh;

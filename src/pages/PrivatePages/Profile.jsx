@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { LogOut, User, Award, BookOpen, Bell, Shield, HelpCircle } from "lucide-react"
 import { Button } from "../../components/ui/button"
 import UserProfileHeader from "../../components/ProfileComponent/UserProfileHeader"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { logout } from "../../Redux/slices/authSlice"
 import { commenApi } from "../../lib/api/commen"
 import NavItem from "../../components/ProfileComponent/NavItem"
@@ -11,11 +11,21 @@ import SectionContent from "../../components/ProfileComponent/SectionContent"
 
 
 export default function ProfileDashboard({courses}) {
-
+  console.log(courses);
+  
   const [notifications, setNotifications] = useState([]);
   const [loadingNotifications, setLoadingNotifications] = useState(false);
   const [activeSection, setActiveSection] = useState("overview")
   const dispatch = useDispatch();
+  const authState = useSelector((state) => state.auth);
+
+
+  useEffect(() => {
+    console.log("Auth State in Profile:", authState);
+    console.log("Is Profile Complete:", authState.isProfileComplete);
+    console.log("User Data:", authState.user);
+  }, [authState]);
+
 
   const handleSignOut = () => {
     dispatch(logout());

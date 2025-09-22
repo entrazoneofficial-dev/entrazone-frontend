@@ -1,6 +1,6 @@
 import { MdOutlineArrowOutward } from "react-icons/md";
 import { FiFileText } from "react-icons/fi";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DropdownMenuCheckboxes } from "../../components/HomeComponenets/DropdownMenuCheckboxes";
 import Carousel from "../../components/HomeComponenets/Carousel";
 import { Link } from "react-router-dom";
@@ -11,10 +11,34 @@ import { UnsubscribedCoursesGrid } from "../../components/HomeComponenets/Unsubs
 
 function Home({ homeData }) {
   const [showAllSubjects, setShowAllSubjects] = useState(false);
+  const [hasReloaded, setHasReloaded] = useState(false);
    
+  // Reload when subscribed_courses array is empty
+  useEffect(() => {
+    if (homeData && (!homeData.subscribed_courses || homeData.subscribed_courses.length === 0) && !hasReloaded) {
+      console.log("Subscribed courses array is empty, reloading page...");
+      setHasReloaded(true);
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    }
+  }, [homeData, hasReloaded]);
+
+  // Show loading message while waiting for reload
+  if (!homeData || (!homeData.subscribed_courses || homeData.subscribed_courses.length === 0)) {
+    return (
+      <div className="w-full h-full container mx-auto flex items-center justify-center min-h-96">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading content...</p>
+        </div>
+      </div>
+    );
+  }
+
   const displayedSubjects = showAllSubjects 
-    ? homeData?.subscribed_courses?.[0]?.subjects || []
-    : (homeData?.subscribed_courses?.[0]?.subjects || []).slice(0, 8);
+    ? homeData.subscribed_courses[0]?.subjects || []
+    : (homeData.subscribed_courses[0]?.subjects || []).slice(0, 8);
 
   return (
     <div className="w-full h-full container mx-auto">
@@ -34,13 +58,13 @@ function Home({ homeData }) {
 
             <div className="absolute md:right-6 lg:right-24 hidden md:block">
               <DropdownMenuCheckboxes
-                subscribedCourses={homeData?.subscribed_courses}
+                subscribedCourses={homeData.subscribed_courses}
               />
             </div>
           </div>
         </div>
 
-        <Carousel banners={homeData?.banners} />
+        <Carousel banners={homeData.banners} />
       </section>
 
       <section className="p-5">
@@ -99,7 +123,7 @@ function Home({ homeData }) {
           <YoutubeGrid />
         </div>
       </section>
-      {homeData?.unsubscribed_courses &&
+      {homeData.unsubscribed_courses &&
         homeData.unsubscribed_courses.length > 0 && (
           <section className="p-5">
             <div className="flex flex-col">
