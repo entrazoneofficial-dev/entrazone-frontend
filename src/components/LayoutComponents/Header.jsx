@@ -111,7 +111,7 @@ function Header({ subjects }) {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <div className="bg-white shadow-md rounded-full flex items-center gap-2 md:gap-3 cursor-pointer hover:shadow-lg transition-shadow md:px-0">
-                <div className="bg-white shadow-md rounded-full border border-gray-100">
+                <div className={`bg-white shadow-md rounded-full border border-gray-100 ${user?.image ? "p-0" : "p-2"}`}>
                   {user?.image ? (
                     <img
                       src={user.image.startsWith('http') ? user.image : `${import.meta.env.VITE_API_BASE_URL || backendUrl}${user.image}`}

@@ -86,6 +86,7 @@ function BookMentorModal({ isOpen, setIsOpen, subjects }) {
         text: 'Please select a subject and chapter',
         confirmButtonColor: '#9333EA',
       });
+      setIsOpen(false);
       return;
     }
 
@@ -96,6 +97,7 @@ function BookMentorModal({ isOpen, setIsOpen, subjects }) {
         text: 'Please enter an agenda for the session',
         confirmButtonColor: '#9333EA',
       });
+      setIsOpen(false);
       return;
     }
 
