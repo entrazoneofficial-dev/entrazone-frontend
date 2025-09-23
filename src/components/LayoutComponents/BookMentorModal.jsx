@@ -19,7 +19,7 @@ import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
 import { commenApi } from "../../lib/api/commen";
 import LoadingPage from "../LoaderComponent/LoadingPage";
-import Swal from 'sweetalert2';
+import toast from "react-hot-toast";
 
 function BookMentorModal({ isOpen, setIsOpen, subjects }) {
   const [selectedSubject, setSelectedSubject] = useState(
@@ -78,26 +78,14 @@ function BookMentorModal({ isOpen, setIsOpen, subjects }) {
     setSelectedChapter(chapterID);
   };
 
- const handleSubmit = async () => {
+  const handleSubmit = async () => {
     if (!selectedSubject || !selectedChapter) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Please select a subject and chapter',
-        confirmButtonColor: '#9333EA',
-      });
-      setIsOpen(false);
+      toast.error("Please select a subject and chapter");
       return;
     }
 
     if (!agenda) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Please enter an agenda for the session',
-        confirmButtonColor: '#9333EA',
-      });
-      setIsOpen(false);
+      toast.error("Please enter an agenda for the session");
       return;
     }
 
@@ -114,22 +102,12 @@ function BookMentorModal({ isOpen, setIsOpen, subjects }) {
     try {
       setIsSubmitting(true);
       const response = await commenApi.BookaMentor(payload);
-      Swal.fire({
-        icon: 'success',
-        title: 'Success!',
-        text: 'Session booked successfully!',
-        confirmButtonColor: '#9333EA',
-      });
+      toast.success("Session booked successfully!");
       setIsOpen(false);
       resetForm();
     } catch (error) {
       console.error("Booking error:", error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: error.response?.data?.message || "Failed to book session",
-        confirmButtonColor: '#9333EA',
-      });
+      toast.error(error.response?.data?.message || "Failed to book session");
     } finally {
       setIsSubmitting(false);
     }
